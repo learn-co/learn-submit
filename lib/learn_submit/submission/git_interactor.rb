@@ -48,7 +48,7 @@ module LearnSubmit
       end
 
       def check_remote
-        self.remote_name = if !git.remote.url.match(url.username)
+        self.remote_name = if !git.remote.url.match(/#{username}/)
           fix_remote!
         else
           git.remote.name
