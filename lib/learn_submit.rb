@@ -1,5 +1,7 @@
-require "learn_submit/version"
+require 'learn_submit/version'
+require 'netrc'
+require 'git'
+require 'learn_web'
 
-module Learn::Submit
-  # Your code goes here...
+module LearnSubmit
 end

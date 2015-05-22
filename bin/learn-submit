@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'learn_submit'
+
+# To prevent weird errors when random command line args are passed in
+KNOWN_COMMANDS = []
+
+ARGV.map! do |arg|
+  KNOWN_COMMANDS.include?(arg) ? arg : nil
+end.compact!
+
+LearnSubmit::Submission.create
