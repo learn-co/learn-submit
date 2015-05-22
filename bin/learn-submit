@@ -5,9 +5,7 @@ require 'learn_submit'
 # To prevent weird errors when random command line args are passed in
 KNOWN_COMMANDS = []
 
-puts ARGV
-puts ARGV[0]
-message = ARGV[0] ? ARGV[0] : nil
+message = ARGV[0] ? ARGV.join(' ') : nil
 
 ARGV.map! do |arg|
   KNOWN_COMMANDS.include?(arg) ? arg : nil
