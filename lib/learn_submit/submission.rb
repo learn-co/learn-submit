@@ -16,8 +16,6 @@ module LearnSubmit
     def create
       commit_and_push!
       submit!
-
-      puts 'Done.'
     end
 
     def user
@@ -31,7 +29,7 @@ module LearnSubmit
     end
 
     def submit!
-      print 'Submitting lesson...'
+      puts 'Submitting lesson...'
       repo_name   = git.repo_name
       branch_name = git.branch_name
 
@@ -40,9 +38,9 @@ module LearnSubmit
       when 200
         puts "Done."
       when 404
-        puts "\nSorry, it seems like there was a problem connecting with Learn. Please try again."
+        puts 'Sorry, it seems like there was a problem connecting with Learn. Please try again.'
       else
-        puts "\n#{pr_response.message}"
+        puts pr_response.message
       end
     end
   end
