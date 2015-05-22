@@ -94,8 +94,7 @@ module LearnSubmit
           git.commit(message)
         rescue Git::GitExecuteError => e
           if e.message.match(/nothing to commit/)
-            puts 'It looks like you have no changes to submit. Exiting...'
-            exit
+            puts "It looks like you have no changes to commit. Will still try updating your submission..."
           else
             puts 'Sorry, something went wrong. Please try again.'
             exit
