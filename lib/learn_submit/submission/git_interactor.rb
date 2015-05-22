@@ -29,6 +29,10 @@ module LearnSubmit
         url.gsub(/^.+\w+\/(.*?)(?:\.git)?$/, '')
       end
 
+      def branch_name
+        git.branch.name
+      end
+
       private
 
       def set_git
