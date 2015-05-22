@@ -80,24 +80,27 @@ module LearnSubmit
       end
 
       def add_changes
+        puts 'Adding changes...'
         git.add(all: true)
       end
 
       def commit_changes
+        puts 'Committing changes...'
         begin
           git.commit(message)
         rescue Git::GitExecuteError => e
           if e.message.match(/nothing to commit/)
-            puts "It looks like you have no changes to submit. Exiting..."
+            puts 'It looks like you have no changes to submit. Exiting...'
             exit
           else
-            puts "Sorry, something went wrong. Please try again."
+            puts 'Sorry, something went wrong. Please try again.'
             exit
           end
         end
       end
 
       def push!
+        puts 'Pushing changes to github...'
         push_remote = git.remote(self.remote_name)
         git.push(push_remote)
       end

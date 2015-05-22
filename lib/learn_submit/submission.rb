@@ -16,6 +16,8 @@ module LearnSubmit
     def create
       commit_and_push!
       submit!
+
+      puts 'Done.'
     end
 
     def user
@@ -29,6 +31,7 @@ module LearnSubmit
     end
 
     def submit!
+      puts 'Submitting lesson...'
       repo_name = git.repo_name
       client.issue_pull_request(repo_name: repo_name)
     end
