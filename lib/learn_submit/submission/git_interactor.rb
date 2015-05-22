@@ -63,7 +63,7 @@ module LearnSubmit
       end
 
       def add_correct_remote(name, url)
-        new_url = new_url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/,'')
+        new_url = new_url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
         git.add_remote(name, url)
 
         name
