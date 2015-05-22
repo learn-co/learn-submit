@@ -1,7 +1,8 @@
 module LearnSubmit
   class Submission
     class GitInteractor
-      attr_reader :username, :git, :message
+      attr_reader   :username, :git, :message
+      attr_accessor :remote_name
 
       LEARN_ORG_NAMES = [
         'learn-co',
@@ -13,8 +14,6 @@ module LearnSubmit
         @username = username
         @message  = message || 'Done.'
         @git      = set_git
-
-        set_git_dir
       end
 
       def commit_and_push
@@ -23,6 +22,12 @@ module LearnSubmit
         commit_changes
 
         push!
+      end
+
+      def repo_name
+        url = git.remote(remote_name).url
+
+        url.gsub(/^.+\w+\/(.*?)(?:\.git)?$/, '')
       end
 
       private
@@ -64,8 +69,8 @@ module LearnSubmit
       end
 
       def add_correct_remote(name, url)
-        new_url = new_url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
-        git.add_remote(name, url)
+        new_url = url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
+        git.add_remote(name, new_url)
 
         name
       end
