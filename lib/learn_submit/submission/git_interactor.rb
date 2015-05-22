@@ -2,7 +2,7 @@ module LearnSubmit
   class Submission
     class GitInteractor
       attr_reader   :username, :git, :message
-      attr_accessor :remote_name
+      attr_accessor :remote_name, :old_remote_name, :old_url
 
       LEARN_ORG_NAMES = [
         'learn-co',
@@ -48,7 +48,7 @@ module LearnSubmit
       end
 
       def check_remote
-        self.remote_name = if !git.remote.url.match(/#{username}/)
+        self.remote_name = if git.remote.url.match(/#{username}/).nil?
           fix_remote!
         else
           git.remote.name
@@ -56,20 +56,25 @@ module LearnSubmit
       end
 
       def fix_remote!
-        old_remote_name = git.remote.name
-        old_url         = git.remote.url
+        self.old_remote_name = git.remote.name
+        self.old_url         = git.remote.url
 
-        add_backup_remote(old_remote_name, old_url)
+        add_backup_remote
+        remove_old_remote
         add_correct_remote
       end
 
-      def add_backup_remote(name, url)
-        git.add_remote("#{name}-bak", url)
+      def add_backup_remote
+        git.add_remote("#{old_remote_name}-bak", old_url)
       end
 
-      def add_correct_remote(name, url)
-        new_url = url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
-        git.add_remote(name, new_url)
+      def remove_old_remote
+        git.remote(old_remote_name).remove
+      end
+
+      def add_correct_remote
+        new_url = old_url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
+        git.add_remote(old_remote_name, new_url)
 
         name
       end
