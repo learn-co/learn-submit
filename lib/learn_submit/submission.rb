@@ -10,7 +10,7 @@ module LearnSubmit
       _login, token = Netrc.read['learn-config']
 
       @client  = LearnWeb::Client.new(token: token)
-      @git     = LearnSubmit::Submission::GitInteractor.new(username: user, message: message)
+      @git     = LearnSubmit::Submission::GitInteractor.new(username: user.username, message: message)
     end
 
     def create
