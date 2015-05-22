@@ -87,7 +87,13 @@ module LearnSubmit
         begin
           git.commit(message)
         rescue Git::GitExecuteError => e
-          puts e.message
+          if e.message.match(/nothing to commit/)
+            puts "It looks like you have no changes to submit. Exiting..."
+            exit
+          else
+            puts "Sorry, something went wrong. Please try again."
+            exit
+          end
         end
       end
 
