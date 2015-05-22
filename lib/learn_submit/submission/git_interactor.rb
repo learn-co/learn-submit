@@ -12,6 +12,7 @@ module LearnSubmit
       def initialize(username:, message:)
         @username = username
         @message  = message || 'Done.'
+        @git      = set_git
 
         set_git_dir
       end
@@ -26,9 +27,9 @@ module LearnSubmit
 
       private
 
-      def set_git_dir
+      def set_git
         begin
-          @git = Git.open(FileUtils.pwd)
+          Git.open(FileUtils.pwd)
         rescue ArgumentError => e
           if e.mssage.match(/path does not exist/)
             puts "It doesn't look like you're in a lesson directory."
