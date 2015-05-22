@@ -31,10 +31,19 @@ module LearnSubmit
     end
 
     def submit!
-      puts 'Submitting lesson...'
+      print 'Submitting lesson...'
       repo_name   = git.repo_name
       branch_name = git.branch_name
-      client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+
+      pr_response = client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+      case pr_response.status
+      when 200
+        puts "Done."
+      when 404
+        puts "\nSorry, it seems like there was a problem connecting with Learn. Please try again."
+      else
+        puts "\n#{pr_response.message}"
+      end
     end
   end
 end
