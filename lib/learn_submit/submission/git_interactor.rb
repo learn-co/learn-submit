@@ -35,7 +35,7 @@ module LearnSubmit
         begin
           Git.open(FileUtils.pwd)
         rescue ArgumentError => e
-          if e.mssage.match(/path does not exist/)
+          if e.message.match(/path does not exist/)
             puts "It doesn't look like you're in a lesson directory."
             puts 'Please cd into an appropriate directory and try again.'
 
