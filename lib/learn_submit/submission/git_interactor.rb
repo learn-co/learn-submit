@@ -84,7 +84,11 @@ module LearnSubmit
       end
 
       def commit_changes
-        git.commit(message)
+        begin
+          git.commit(message)
+        rescue Git::GitExecuteError => e
+          puts e.message
+        end
       end
 
       def push!
