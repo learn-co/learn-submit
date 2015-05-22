@@ -26,7 +26,7 @@ module LearnSubmit
 
       def repo_name
         url = git.remote(remote_name).url
-        url.gsub(/^.+\w+\/(.*?)(?:\.git)?$/, '')
+        url.match(/^.+\w+\/(.*?)(?:\.git)?$/)[1]
       end
 
       def branch_name
