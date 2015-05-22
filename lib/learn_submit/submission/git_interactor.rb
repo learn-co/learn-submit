@@ -76,7 +76,7 @@ module LearnSubmit
         new_url = old_url.gsub(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/, username)
         git.add_remote(old_remote_name, new_url)
 
-        name
+        old_remote_name
       end
 
       def add_changes
