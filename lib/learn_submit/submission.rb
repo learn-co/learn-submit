@@ -1,6 +1,6 @@
 module LearnSubmit
   class Submission
-    attr_reader :git
+    attr_reader :git, :client
 
     def self.create(message: nil)
       new(message: message).create
