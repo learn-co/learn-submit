@@ -26,7 +26,6 @@ module LearnSubmit
 
       def repo_name
         url = git.remote(remote_name).url
-
         url.gsub(/^.+\w+\/(.*?)(?:\.git)?$/, '')
       end
 
@@ -84,7 +83,8 @@ module LearnSubmit
       end
 
       def push!
-        git.push
+        push_remote = git.remote(self.remote_name)
+        git.push(push_remote)
       end
     end
   end

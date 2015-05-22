@@ -5,8 +5,10 @@ require 'learn_submit'
 # To prevent weird errors when random command line args are passed in
 KNOWN_COMMANDS = []
 
+message = ARGV[0] ? ARGV[0] : nil
+
 ARGV.map! do |arg|
   KNOWN_COMMANDS.include?(arg) ? arg : nil
 end.compact!
 
-LearnSubmit::Submission.create
+LearnSubmit::Submission.create(message: message)
