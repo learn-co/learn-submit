@@ -26,9 +26,12 @@ module LearnSubmit
 
     def commit_and_push!
       git.commit_and_push
+
+      # Just to give GitHub a second to register the repo changes
+      sleep(1)
     end
 
-    def submit!
+    def submit!(retries=3)
       puts 'Submitting lesson...'
       repo_name   = git.repo_name
       branch_name = git.branch_name
@@ -41,6 +44,11 @@ module LearnSubmit
         puts 'Sorry, it seems like there was a problem connecting with Learn. Please try again.'
       else
         puts pr_response.message
+
+        if retries > 0
+          puts "Trying again..."
+          submit!(retries-1)
+        end
       end
     end
   end
