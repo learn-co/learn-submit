@@ -36,12 +36,27 @@ module LearnSubmit
       repo_name   = git.repo_name
       branch_name = git.branch_name
 
-      pr_response = client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+      begin
+        Timeout::timeout(15) do
+          pr_response = client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+        end
+      rescue Timeout::Error
+        if retries > 0
+          puts "It seems like there's a problem connecting to Learn. Trying again..."
+          submit!(retries-1)
+        else
+          puts "Sorry, there's a problem reaching Learn right now. Please try again."
+          exit
+        end
+      end
+
       case pr_response.status
       when 200
         puts "Done."
+        exit
       when 404
         puts 'Sorry, it seems like there was a problem connecting with Learn. Please try again.'
+        exit
       else
         puts pr_response.message
 

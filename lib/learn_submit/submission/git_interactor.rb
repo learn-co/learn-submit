@@ -102,10 +102,22 @@ module LearnSubmit
         end
       end
 
-      def push!
-        puts 'Pushing changes to github...'
+      def push!(retries=3)
+        puts 'Pushing changes to GitHub...'
         push_remote = git.remote(self.remote_name)
-        git.push(push_remote)
+        begin
+          Timeout::timeout(15) do
+            git.push(push_remote)
+          end
+        rescue Timeout::Error
+          if retries > 0
+            puts "Seems there was an error pushing to GitHub. Trying again..."
+            puts!(retries-1)
+          else
+            puts "Can't reach GitHub right now. Please try again."
+            exit
+          end
+        end
       end
     end
   end
