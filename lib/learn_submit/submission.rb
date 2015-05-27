@@ -37,8 +37,8 @@ module LearnSubmit
       branch_name = git.branch_name
 
       begin
-        Timeout::timeout(15) do
-          pr_response = client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+        pr_response = Timeout::timeout(15) do
+          client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
         end
       rescue Timeout::Error
         if retries > 0
