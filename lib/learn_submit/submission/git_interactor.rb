@@ -69,7 +69,14 @@ module LearnSubmit
       end
 
       def add_backup_remote
-        git.add_remote("#{old_remote_name}-bak", old_url)
+        begin
+          git.add_remote("#{old_remote_name}-bak", old_url)
+        rescue Git::GitExecuteError => e
+          if e.message.match(/already exists/).nil?
+            puts "Sorry, something Git-related went wrong. Please try again."
+            exit
+          end
+        end
       end
 
       def remove_old_remote
