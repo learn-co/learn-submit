@@ -59,11 +59,7 @@ module LearnSubmit
         exit
       else
         puts pr_response.message
-
-        if retries > 0
-          puts "Trying again..."
-          submit!(retries-1)
-        end
+        exit
       end
     end
   end
