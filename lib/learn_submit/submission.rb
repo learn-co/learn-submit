@@ -29,7 +29,7 @@ module LearnSubmit
     end
 
     def cleanup_tmp_file
-      FileUtils.rm(file_path)
+      File.write(file_path, 'Done.')
     end
 
     def user
