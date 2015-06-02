@@ -1,6 +1,6 @@
 module LearnSubmit
   class Submission
-    attr_reader :git, :client
+    attr_reader :git, :client, :file_path
 
     def self.create(message: nil)
       new(message: message).create
@@ -9,13 +9,27 @@ module LearnSubmit
     def initialize(message:)
       _login, token = Netrc.read['learn-config']
 
-      @client  = LearnWeb::Client.new(token: token)
-      @git     = LearnSubmit::Submission::GitInteractor.new(username: user.username, message: message)
+      @client    = LearnWeb::Client.new(token: token)
+      @git       = LearnSubmit::Submission::GitInteractor.new(username: user.username, message: message)
+      @file_path = File.expand_path('~/.learn-submit-tmp')
     end
 
     def create
+      setup_tmp_file
+
       commit_and_push!
       submit!
+
+      cleanup_tmp_file
+    end
+
+    def setup_tmp_file
+      FileUtils.touch(file_path)
+      File.write(file_path, '')
+    end
+
+    def cleanup_tmp_file
+      FileUtils.rm(file_path)
     end
 
     def user
@@ -25,6 +39,7 @@ module LearnSubmit
     private
 
     def commit_and_push!
+      File.write(file_path, 'Pushing your code to GitHub...')
       git.commit_and_push
 
       # Just to give GitHub a second to register the repo changes
@@ -33,6 +48,7 @@ module LearnSubmit
 
     def submit!(retries=3)
       puts 'Submitting lesson...'
+      File.write(file_path, 'Opening a Pull Request...')
       repo_name   = git.repo_name
       branch_name = git.branch_name
 
