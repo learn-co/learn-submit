@@ -60,6 +60,7 @@ module LearnSubmit
           submit!(retries-1)
         else
           puts "Sorry, there's a problem reaching Learn right now. Please try again."
+          File.write(file_path, 'ERROR: Error connecting to learn.')
           exit
         end
       end
@@ -71,6 +72,7 @@ module LearnSubmit
         exit
       when 404
         puts 'Sorry, it seems like there was a problem connecting with Learn. Please try again.'
+        File.write(file_path, 'ERROR: Error connecting to learn.')
         exit
       else
         puts pr_response.message
