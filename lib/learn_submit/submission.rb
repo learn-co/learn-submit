@@ -19,8 +19,6 @@ module LearnSubmit
 
       commit_and_push!
       submit!
-
-      cleanup_tmp_file
     end
 
     def setup_tmp_file
@@ -69,12 +67,14 @@ module LearnSubmit
       case pr_response.status
       when 200
         puts "Done."
+        File.write(file_path, 'Done.')
         exit
       when 404
         puts 'Sorry, it seems like there was a problem connecting with Learn. Please try again.'
         exit
       else
         puts pr_response.message
+        File.write(file_path, 'Done.')
         exit
       end
     end
