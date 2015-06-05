@@ -76,7 +76,13 @@ module LearnSubmit
         exit
       else
         puts pr_response.message
-        File.write(file_path, 'Done.')
+
+        if pr_response.message.match(/looks the same/)
+          File.write(file_path, 'ERROR: Nothing to submit')
+        else
+          File.write(file_path, 'Done.')
+        end
+
         exit
       end
     end
