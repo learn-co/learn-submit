@@ -5,7 +5,6 @@ module LearnSubmit
       attr_accessor :remote_name, :old_remote_name, :old_url
 
       LEARN_ORG_NAMES = [
-        'learn-co',
         'learn-co-curriculum',
         'learn-co-students'
       ]
@@ -52,10 +51,17 @@ module LearnSubmit
       end
 
       def check_remote
-        self.remote_name = if git.remote.url.match(/#{username}/).nil?
-          fix_remote!
+        if git.remote.url.match(/#{username}/).nil? && git.remote.url.match(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/).nil?
+          puts "It doesn't look like you're in a lesson directory."
+          puts 'Please cd into an appropriate directory and try again.'
+
+          exit
         else
-          git.remote.name
+          self.remote_name = if git.remote.url.match(/#{username}/).nil?
+            fix_remote!
+          else
+            git.remote.name
+          end
         end
       end
 
