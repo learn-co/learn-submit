@@ -1,6 +1,6 @@
 module LearnSubmit
   class Submission
-    attr_reader :git, :client, :file_path
+    attr_reader :git, :client, :file_path, :message
 
     def self.create(message: nil)
       new(message: message).create
@@ -12,6 +12,7 @@ module LearnSubmit
       @client    = LearnWeb::Client.new(token: token)
       @git       = LearnSubmit::Submission::GitInteractor.new(username: user.username, message: message)
       @file_path = File.expand_path('~/.learn-submit-tmp')
+      @message   = message
     end
 
     def create
@@ -52,7 +53,7 @@ module LearnSubmit
 
       begin
         pr_response = Timeout::timeout(15) do
-          client.issue_pull_request(repo_name: repo_name, branch_name: branch_name)
+          client.issue_pull_request(repo_name: repo_name, branch_name: branch_name, message: message)
         end
       rescue Timeout::Error
         if retries > 0
