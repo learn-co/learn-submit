@@ -1,25 +1,29 @@
 module LearnSubmit
   class Submission
-    attr_reader :git, :client, :file_path, :message
+    attr_reader :git, :client, :file_path, :message, :save
 
-    def self.create(message: nil)
-      new(message: message).create
+    def self.create(message: nil, save: false)
+      new(message: message, save: save).create
     end
 
-    def initialize(message:)
+    def initialize(message:, save:)
       _login, token = Netrc.read['learn-config']
 
       @client    = LearnWeb::Client.new(token: token)
       @git       = LearnSubmit::Submission::GitInteractor.new(username: user.username, message: message)
       @file_path = File.expand_path('~/.learn-submit-tmp')
       @message   = message
+      @save      = save
     end
 
     def create
       setup_tmp_file
 
       commit_and_push!
-      submit!
+
+      if !save
+        submit!
+      end
     end
 
     def setup_tmp_file
