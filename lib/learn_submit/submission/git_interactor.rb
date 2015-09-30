@@ -42,10 +42,10 @@ module LearnSubmit
             puts "It doesn't look like you're in a lesson directory."
             puts 'Please cd into an appropriate directory and try again.'
 
-            exit
+            exit 1
           else
             puts 'Sorry, something went wrong. Please try again.'
-            exit
+            exit 1
           end
         end
       end
@@ -55,7 +55,7 @@ module LearnSubmit
           puts "It doesn't look like you're in a lesson directory."
           puts 'Please cd into an appropriate directory and try again.'
 
-          exit
+          exit 1
         else
           self.remote_name = if git.remote.url.match(/#{username}/).nil?
             fix_remote!
@@ -80,7 +80,7 @@ module LearnSubmit
         rescue Git::GitExecuteError => e
           if e.message.match(/already exists/).nil?
             puts "Sorry, something Git-related went wrong. Please try again."
-            exit
+            exit 1
           end
         end
       end
@@ -110,7 +110,7 @@ module LearnSubmit
             puts "It looks like you have no changes to commit. Will still try updating your submission..."
           else
             puts 'Sorry, something went wrong. Please try again.'
-            exit
+            exit 1
           end
         end
       end
@@ -128,7 +128,7 @@ module LearnSubmit
             puts!(retries-1)
           else
             puts "Can't reach GitHub right now. Please try again."
-            exit
+            exit 1
           end
         end
       end
