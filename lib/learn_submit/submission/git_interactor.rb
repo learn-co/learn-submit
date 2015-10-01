@@ -125,7 +125,7 @@ module LearnSubmit
         rescue Timeout::Error
           if retries > 0
             puts "Seems there was an error pushing to GitHub. Trying again..."
-            puts!(retries-1)
+            puts (retries-1)
           else
             puts "Can't reach GitHub right now. Please try again."
             exit 1
