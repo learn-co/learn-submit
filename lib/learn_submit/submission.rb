@@ -54,6 +54,7 @@ module LearnSubmit
       File.write(file_path, 'Opening a Pull Request...')
       repo_name   = git.repo_name
       branch_name = git.branch_name
+      sleep(1)
 
       begin
         pr_response = Timeout::timeout(15) do
