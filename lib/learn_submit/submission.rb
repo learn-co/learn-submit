@@ -85,7 +85,7 @@ module LearnSubmit
       else
         if retries > 0
           sleep(2)
-          submit!(1)
+          submit!(0)
         else
           puts pr_response.message
 
