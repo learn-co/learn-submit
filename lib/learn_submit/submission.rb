@@ -50,8 +50,10 @@ module LearnSubmit
     end
 
     def submit!(retries=3)
-      puts 'Submitting lesson...'
-      File.write(file_path, 'Opening a Pull Request...')
+      if retries >= 2
+        puts 'Submitting lesson...'
+        File.write(file_path, 'Opening a Pull Request...')
+      end
       repo_name   = git.repo_name
       branch_name = git.branch_name
       sleep(1)
@@ -81,15 +83,20 @@ module LearnSubmit
         File.write(file_path, 'ERROR: Error connecting to learn.')
         exit 1
       else
-        puts pr_response.message
-
-        if pr_response.message.match(/looks the same/)
-          File.write(file_path, 'ERROR: Nothing to submit')
+        if retries > 0
+          sleep(2)
+          submit!(1)
         else
-          File.write(file_path, 'Done.')
-        end
+          puts pr_response.message
 
-        exit 1
+          if pr_response.message.match(/looks the same/)
+            File.write(file_path, 'ERROR: Nothing to submit')
+          else
+            File.write(file_path, 'Done.')
+          end
+
+          exit 1
+        end
       end
     end
   end
