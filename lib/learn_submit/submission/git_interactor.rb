@@ -51,13 +51,13 @@ module LearnSubmit
       end
 
       def check_remote
-        if git.remote.url.match(/#{username}/).nil? && git.remote.url.match(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/).nil?
+        if git.remote.url.match(/#{username}/i).nil? && git.remote.url.match(/#{LEARN_ORG_NAMES.join('|').gsub('-','\-')}/i).nil?
           puts "It doesn't look like you're in a lesson directory."
           puts 'Please cd into an appropriate directory and try again.'
 
           exit 1
         else
-          self.remote_name = if git.remote.url.match(/#{username}/).nil?
+          self.remote_name = if git.remote.url.match(/#{username}/i).nil?
             fix_remote!
           else
             git.remote.name
