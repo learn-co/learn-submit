@@ -23,8 +23,13 @@ module LearnSubmit
         push!
       end
 
-      def repo_name
-        url = git.remote(remote_name).url
+      def commit
+        add_changes
+        commit_changes
+      end
+
+      def repo_name(remote: remote_name)
+        url = git.remote(remote).url
         url.match(/^.+\w+\/(.*?)(?:\.git)?$/)[1]
       end
 
