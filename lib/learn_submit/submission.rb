@@ -53,12 +53,26 @@ module LearnSubmit
         end
 
         Timeout::timeout(15) do
+          repo_name = git.repo_name(remote: 'origin')
+
           client.submit_event(
             event: 'pull_request',
+            action: 'opened',
             learn_oauth_token: token,
-            repo_name: git.repo_name(remote: 'origin'),
+            repo_name: repo_name,
             base_org_name: 'learn-co-students',
-            forkee: { full_name: nil }
+            forkee: { full_name: nil },
+            pull_request: {
+              head: {
+                repo: {
+                  full_name: "learn-co-students/#{repo_name}",
+                  name: repo_name
+                }
+              }
+            },
+            summary: {
+              action: 'opened'
+            }
           )
         end
       rescue Timeout::Error
