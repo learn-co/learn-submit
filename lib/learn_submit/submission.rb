@@ -74,6 +74,8 @@ module LearnSubmit
               action: 'opened'
             }
           )
+
+          after_ide_submission(repo_name)
         end
       rescue Timeout::Error
         if retries > 0
@@ -130,6 +132,7 @@ module LearnSubmit
         case pr_response.status
         when 200
           puts "Done."
+          after_ide_submission(repo_name)
           File.write(file_path, 'Done.')
           exit
         when 404
@@ -152,6 +155,19 @@ module LearnSubmit
             exit 1
           end
         end
+      end
+    end
+
+    def after_ide_submission(repo_name)
+      return unless dot_learn && dot_learn['after_ide_submission']
+      return unless Socket.gethostname.end_with? '.students.learn.co'
+
+      ide_user_home = "/home/#{ENV['USER']}"
+      path = "#{ide_user_home}/code/labs/#{repo_name}/"
+      url = dot_learn['after_ide_submission']
+
+      File.open("#{ide_user_home}/.fs_changes.log", 'a') do |f|
+        f.puts "#{path} LEARN_SUBMIT #{url}"
       end
     end
   end
