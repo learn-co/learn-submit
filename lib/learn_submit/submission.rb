@@ -54,18 +54,19 @@ module LearnSubmit
 
         Timeout::timeout(15) do
           repo_name = git.repo_name(remote: 'origin')
+          org_name  = git.org_name(remote: 'origin')
 
           client.submit_event(
             event: 'pull_request',
             action: 'opened',
             learn_oauth_token: token,
             repo_name: repo_name,
-            base_org_name: 'learn-co-students',
+            base_org_name: org_name,
             forkee: { full_name: nil },
             pull_request: {
               head: {
                 repo: {
-                  full_name: "learn-co-students/#{repo_name}",
+                  full_name: "#{org_name}/#{repo_name}",
                   name: repo_name
                 }
               }
