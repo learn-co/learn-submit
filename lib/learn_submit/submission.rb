@@ -46,6 +46,9 @@ module LearnSubmit
 
     def simulate_submission!(retries=3)
       begin
+        repo_name = git.repo_name(remote: 'origin')
+        org_name  = git.org_name(remote: 'origin')
+
         if retries == 3
           puts 'Pushing changes to GitHub...'
           sleep(1)
@@ -53,9 +56,6 @@ module LearnSubmit
         end
 
         Timeout::timeout(15) do
-          repo_name = git.repo_name(remote: 'origin')
-          org_name  = git.org_name(remote: 'origin')
-
           client.submit_event(
             event: 'pull_request',
             action: 'opened',
