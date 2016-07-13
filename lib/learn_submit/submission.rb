@@ -93,7 +93,7 @@ module LearnSubmit
     def commit_and_push!
       File.write(file_path, 'Pushing your code to GitHub...')
 
-      if dot_learn['github'] == false
+      if dot_learn && dot_learn['github'] == false
         git.commit
       else
         git.commit_and_push
@@ -104,7 +104,7 @@ module LearnSubmit
     end
 
     def submit!(retries=3)
-      if dot_learn['github'] == false
+      if dot_learn && dot_learn['github'] == false
         simulate_submission!
       else
         if retries >= 2
