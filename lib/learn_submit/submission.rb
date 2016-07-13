@@ -75,13 +75,13 @@ module LearnSubmit
               action: 'opened'
             }
           )
-
-          after_ide_submission(repo_name)
         end
+
+        after_ide_submission(repo_name)
       rescue Timeout::Error
         if retries > 0
           puts "There was a problem submitting this lab. Retrying..."
-          ping_fork_completion(retries-1)
+          simulate_submission!(retries-1)
         else
           puts "There is an issue connecting to Learn. Please try again."
           File.write(file_path, 'ERROR: Error connecting to Learn')
