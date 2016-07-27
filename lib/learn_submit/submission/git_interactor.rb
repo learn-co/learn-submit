@@ -30,7 +30,7 @@ module LearnSubmit
 
       def repo_name(remote: remote_name)
         url = git.remote(remote).url
-        url.match(/^.+\w+\/(.*?)(?:\.git)?$/)[1]
+        url.match(/^.+[\w-]+\/(.*?)(?:\.git)?$/)[1]
       end
 
       def org_name(remote: remote_name)
