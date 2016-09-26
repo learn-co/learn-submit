@@ -1,4 +1,5 @@
 require 'yaml'
+require 'json'
 
 module LearnSubmit
   class Submission
@@ -164,11 +165,14 @@ module LearnSubmit
       return unless Socket.gethostname.end_with? '.students.learn.co'
 
       ide_user_home = "/home/#{ENV['USER']}"
-      path = "#{ide_user_home}/code/labs/#{repo_name}/"
-      url = dot_learn['after_ide_submission']
 
-      File.open("#{ide_user_home}/.fs_changes.log", 'a') do |f|
-        f.puts "#{path} LEARN_SUBMIT #{url}"
+      payload = {
+        command: 'after_ide_submission',
+        url: dot_learn['after_ide_submission']
+      }
+
+      File.open("#{ide_user_home}/.custom_commands.log", 'a') do |f|
+        f.puts payload.to_json
       end
     end
   end
