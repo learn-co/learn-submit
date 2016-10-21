@@ -174,6 +174,17 @@ module LearnSubmit
       File.open("#{ide_user_home}/.custom_commands.log", 'a') do |f|
         f.puts payload.to_json
       end
+
+      # TODO: the following can be removed when IDE versions <2.0 are no
+      # longer supported. There is no '.fs_changes.log' for users on >2.0.
+      if File.exist?("#{ide_user_home}/.fs_changes.log")
+        path = "#{ide_user_home}/code/labs/#{repo_name}/"
+        url = dot_learn['after_ide_submission']
+
+        File.open("#{ide_user_home}/.fs_changes.log", 'a') do |f|
+          f.puts "#{path} LEARN_SUBMIT #{url}"
+        end
+      end
     end
   end
 end
