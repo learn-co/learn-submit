@@ -162,7 +162,7 @@ module LearnSubmit
 
     def after_ide_submission(repo_name)
       return unless dot_learn && dot_learn['after_ide_submission']
-      return unless Socket.gethostname.end_with? '.students.learn.co'
+      return unless ENV['IDE_CONTAINER'] == 'true'
 
       ide_user_home = "/home/#{ENV['USER']}"
 
