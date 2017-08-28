@@ -78,6 +78,7 @@ module LearnSubmit
           )
         end
 
+        puts 'Done.'
         after_ide_submission(repo_name)
       rescue Timeout::Error
         if retries > 0
@@ -133,7 +134,7 @@ module LearnSubmit
 
         case pr_response.status
         when 200
-          puts "Done."
+          puts 'Done.'
           after_ide_submission(repo_name)
           File.write(file_path, 'Done.')
           exit
