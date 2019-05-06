@@ -1,9 +1,8 @@
-require 'yaml'
 require 'json'
 
 module LearnSubmit
   class Submission
-    attr_reader :git, :client, :file_path, :message, :save, :token, :dot_learn
+    attr_reader :git, :client, :file_path, :message, :save, :token
 
     def self.create(message: nil, save: false)
       new(message: message, save: save).create
@@ -17,7 +16,6 @@ module LearnSubmit
       @file_path = File.expand_path('~/.learn-submit-tmp')
       @message   = message
       @save      = save
-      @dot_learn = YAML.load(File.read("#{FileUtils.pwd}/.learn")) if File.exist?("#{FileUtils.pwd}/.learn")
     end
 
     def create
@@ -48,11 +46,7 @@ module LearnSubmit
     def commit_and_push!
       File.write(file_path, 'Pushing your code to GitHub...')
 
-      if dot_learn && dot_learn['github'] == false
-        git.commit
-      else
-        git.commit_and_push
-      end
+      git.commit_and_push
 
       # Just to give GitHub a second to register the repo changes
       sleep(1)
