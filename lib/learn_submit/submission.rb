@@ -2,7 +2,7 @@ require 'json'
 
 module LearnSubmit
   class Submission
-    attr_reader :git, :client, :file_path, :message, :save, :token
+    attr_reader :git, :client, :file_path, :message, :save
 
     def self.create(message: nil, save: false)
       new(message: message, save: save).create
